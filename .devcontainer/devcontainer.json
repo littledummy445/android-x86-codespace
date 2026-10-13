@@ -1,0 +1,19 @@
+{
+    "name": "Android-x86 in Cloud Workspace",
+    "image": "://microsoft.com",
+    "runArgs": [
+        "--device=/dev/kvm"
+    ],
+    "privileged": true,
+    "features": {
+        "ghcr.io/devcontainers/features/desktop-lite:1": {
+            "version": "latest"
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/setup.sh",
+    "customizations": {
+        "codespaces": {
+            "openPorts": [6080, 5555]
+        }
+    }
+}
