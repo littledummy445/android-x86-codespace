@@ -9,7 +9,7 @@ This repository features **zero-touch automation**—it automatically mounts the
 
 ## 🚀 Quick Launch
 
-[![Open in GitHub Codespaces](https://github.com)](https://github.com)
+[![Open in GitHub Codespaces](https://github.com)](https://codespaces.new)
 
 1. Click the **Open in GitHub Codespaces** badge above.
 2. Wait a few moments for the background initialization script to finish pulling the ISO, setting up the 32GB disk layout, and handling the partition architecture.
