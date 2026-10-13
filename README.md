@@ -9,19 +9,25 @@ This repository features **zero-touch automation**—it automatically mounts the
 
 ## 🚀 Quick Launch
 
-[![Open in GitHub Codespaces](https://github.com)](https://codespaces.new)
+[![Open in GitHub Codespaces](https://shields.io)](https://codespaces.new)
 
-1. Click the **Open in GitHub Codespaces** badge above.
-2. Wait a few moments for the background initialization script to finish pulling the ISO, setting up the 32GB disk layout, and handling the partition architecture.
-3. Once the terminal settles, initiate the runtime container environment by executing:
+If clicking the badge above, or navigating directly to **[codespaces.new](https://codespaces.new)**, follow these layout selections to provision your machine:
+
+1. **Repository:** Search for and select your **`littledummy445/android-x86-codespace`** repository path string.
+2. **Branch:** Keep this assigned to `main`.
+3. **Region:** Choose the region physically closest to your location (for the lowest VNC network streaming lag).
+4. **Machine Type:** Click the dropdown menu and change it from the default 2-core option to a **4-core or 8-core machine instance**. *(Crucial for fast software UI compilation).*
+5. Click **Create codespace**.
+6. Wait a few moments for the background initialization script to finish pulling the ISO, setting up the 32GB disk layout, and handling the partition architecture.
+7. Once the terminal settles, initiate the runtime container environment by executing:
    ```bash
    ./run-android.sh
    ```
-4. A notification popup will appear in the bottom-right corner of VS Code. Click **Open in Browser** for port `6080`, or manually navigate your browser tab to:
+8. A notification popup will appear in the bottom-right corner of VS Code. Click **Open in Browser** for port `6080`, or manually navigate your browser tab to:
    ```text
    http://localhost:6080/vnc.html
    ```
-5. Click the dark blue **Connect** button, and enjoy your cloud-based Android ecosystem!
+9. Click the dark blue **Connect** button, and enjoy your cloud-based Android ecosystem!
 
 ---
 
@@ -36,7 +42,7 @@ This repository features **zero-touch automation**—it automatically mounts the
 
 ## 🛠️ Requirements & Performance
 
-* **Codespace Core Allocation:** For optimal performance, it is highly recommended to run this project on a **4-core or 8-core** Codespace instance.
+* **Codespace Core Allocation:** For optimal performance, it is highly recommended to select a **4-core or 8-core** machine configuration on the creation layout screen.
 * **Graphics Fallback:** Because cloud environments do not feature physical PCIe GPU hardware engines to pass into QEMU containers, the system uses a virtualized VRAM rasterizer. Heavy 3D rendering packages or modern high-end gaming assets may experience frame-rate drops.
 
 ---
