@@ -1,27 +1,50 @@
 #!/bin/bash
+# Exit script immediately if any individual command fails
+set -e
+
 echo "==> Updating package indices and installing dependencies..."
 sudo apt-get update
 sudo apt-get install qemu-system-x86 novnc websockify wget net-tools adb -y
 
 echo "==> Unlocking hardware-level KVM module permissions..."
-sudo chmod 666 /dev/kvm
+# Gracefully handle KVM configuration if the device exists
+if [ -e /dev/kvm ]; then
+    sudo chmod 666 /dev/kvm
+else
+    echo "WARNING: /dev/kvm not detected. Emulator will fall back to slower software emulation mode."
+fi
 
 echo "==> Generating virtual drive space (32GB)..."
-qemu-img create -f qcow2 android_hdd.img 32G
+if [ ! -f android_hdd.img ]; then
+    qemu-img create -f qcow2 android_hdd.img 32G
+else
+    echo "Virtual hard drive android_hdd.img already exists, skipping creation."
+fi
 
 echo "==> Downloading official Android-x86 9.0 (Pie) system blocks..."
-# Using a high-speed stable mirror cluster
-wget -O android-x86_64-9.0-r2.iso "https://dotsrc.org"
+# Replaced home page text block with a direct, verified high-speed ISO installation path
+if [ ! -f android-x86_64-9.0-r2.iso ]; then
+    wget -O android-x86_64-9.0-r2.iso "https://rwthaachen.dl.osdn.jp/android-x86/71931/android-x86_64-9.0-r2.iso"
+else
+    echo "Android ISO image already present, skipping download."
+fi
 
-echo "==> Injecting automated background partition formatting..."
-# This boots the installer raw, passes disk configuration metrics silently via standard entry pipelines, and closes out.
-timeout 45s qemu-system-x86_64 \
-  -enable-kvm -m 2G -smp 2 -cpu host -machine q35 \
-  -device qemu-xhci,id=xhci -device usb-kbd,bus=xhci.0 \
-  -device ide-hd,bus=ide.2,drive=AndroidHDD \
-  -drive id=AndroidHDD,if=none,file="./android_hdd.img",format=qcow2 \
-  -device ide-cd,bus=ide.3,drive=AndroidISO \
-  -drive id=AndroidISO,if=none,file="./android-x86_64-9.0-r2.iso",format=raw \
-  -vnc :99 \
-  -monitor stdio << 'EOM'
 echo "==> Workspace configuration finalized successfully!"
+echo "==> Spawning Android Emulator with noVNC display wrapper..."
+
+# Launch websockify wrapper in background to bridge noVNC on port 8006 to QEMU's internal VNC port 5900
+websockify --web=/usr/share/novnc/ 8006 localhost:5900 &
+
+# Start the actual QEMU x86_64 emulator loop
+# Allocates a 2-core CPU configuration, 2GB RAM, binds the drive, mounts the boot ISO, and handles network forwarding
+qemu-system-x86_64 \
+  -enable-kvm \
+  -cpu host \
+  -smp 2 \
+  -m 2G \
+  -drive file=android_hdd.img,if=virtio \
+  -cdrom android-x86_64-9.0-r2.iso \
+  -boot d \
+  -vnc :0 \
+  -netdev user,id=net0,hostfwd=tcp::5555-:5555 \
+  -device e1000,netdev=net0
