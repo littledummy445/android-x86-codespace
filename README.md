@@ -9,7 +9,7 @@ This repository features **zero-touch automation**—it automatically mounts the
 
 ## 🚀 Quick Launch
 
-[![Open in GitHub Codespaces](https://shields.io)](https://codespaces.new)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/littledummy445/android-x86-codespace)
 
 If clicking the badge above, or navigating directly to **[codespaces.new](https://codespaces.new)**, follow these layout selections to provision your machine:
 
