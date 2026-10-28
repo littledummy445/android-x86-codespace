@@ -1,6 +1,6 @@
 {
     "name": "Android-x86 in Cloud Workspace",
-    "image": "://microsoft.com",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "runArgs": [
         "--device=/dev/kvm"
     ],
